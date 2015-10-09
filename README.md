@@ -5,3 +5,10 @@ simple C/C++ Programm to get information from microcontroller, who is connected 
 
 
 moana.conf must be in the same folder 15092015
+
+
+
+
+//Errorcodes
+
+10 config file not found

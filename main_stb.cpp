@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "functions.h"
 //#######################
 //## moana.conf als Mysql Config file wird benötigt im selben Ordner wie
 //## das Main Programm
@@ -11,7 +11,8 @@ int main(void) {
 
 	
 	MYSQL *conn;
-	char configFilename[50]={"moana.conf"},inputLine[6][50];
+	char inputLine[6][50];
+	const char *configFilename="moana.conf";
 	FILE *configFile;
 	int c,i=0;
 	long int mysqlPort;
@@ -22,21 +23,21 @@ int main(void) {
 	char *pserver, *puser, *ppassword, *pdatabase, *pport;
 	char *errorStringtoPort;
 	
-	configFile = fopen("moana.conf","r");
+	printf("tewt");
 	
-	if(configFile != NULL){												//Wenn die File ok ist weiter
+	if(!file_existing(configFilename))
+		{return 10;}
+	else{
+	
+	configFile = fopen("moana.conf","r");
 		while((c=fgetc(configFile)) != EOF){							//Solange fortsetzen wie das Ende Der File erreicht ist
 			for(i=0;i<7;i++){											//Zeilenweisen einlesen der Config #Problem:Ersteszeichen 
-				fgets(inputLine[i],50,configFile);							
-					
+				fgets(inputLine[i],50,configFile);		
 				if(inputLine[i][(int)strlen(inputLine[i])-1]==10)		//Löschen des CR(\n)
 					inputLine[i][(int)strlen(inputLine[i])-1]= 0 ;		
 			}
 		}
-	}else{
-		printf("could not open Config File # %s #",configFilename);
-		return EXIT_FAILURE;
-	}
+	
 	
 		
 	pserver = mysqlConfig[0];
@@ -53,7 +54,7 @@ int main(void) {
 		pch=strtok(NULL, "=");
 		strncpy(mysqlConfig[i],pch,sizeof(mysqlConfig[i]));
 		}	
-		
+	
 	/*for(i=0;i<6;i++)
 		puts(mysqlConfig[i]);
 	*/
@@ -64,7 +65,7 @@ int main(void) {
 	//***************************************************
 	//****************MySQL CONNECTION*******************
 	//***************************************************
-	
+	exit(1);
 	conn = mysql_init(NULL);
 		
 	// Connect to database 
@@ -76,7 +77,7 @@ int main(void) {
    
 
 	printf("Mysql client version: %s\n", mysql_get_client_info());
-	        
-	        
+	}       
+	
    return 0;
   }
